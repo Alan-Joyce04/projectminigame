@@ -1,0 +1,300 @@
+<!DOCTYPE html> 
+
+<html> 
+<html lang="en" class="Alan"
+
+<head>
+ 
+<ul>
+  <li><a href="file:///C:/Users/alanj/Documents/First-Website/page2.html/indexpros.html">Mini-Game</a></li>
+  <li><a href="file:///C:/Users/alanj/Documents/First-Website/page2.html/index%20(4).html">Gallery</a></li>
+  <li><a href="file:///C:/Users/alanj/Documents/First-Website/page2.html/Andrew's%20html%20and%20css/index.html">Donation Form</a></li>
+  <link rel="stylesheet" href="stylepro.css">
+  
+</ul>
+    <title>Arctic Blackjack</title> 
+      
+
+</head> 
+
+  
+
+<body> 
+
+    <h1>Arctic Blackjack</h1> 
+    <div id="text-area"></div> 
+    <button id="new-game-button">New Game</button> 
+    <button id="hit-button">Hit</button> 
+    <button id="stand-button">Stand</button> 
+    <script> 
+
+        // Card suits and values here 
+
+        const suits = ["Seals", "Penguins", "Foxes", "Polar Bears"]; 
+        const values = [ 
+            "Ace", "King", "Queen", "Jack", "Ten", 
+            "Nine", "Eight", "Seven", "Six", "Five", 
+            "Four", "Three", "Two" 
+
+        ]; 
+
+  
+
+        // DOM variables 
+        const textArea = document.getElementById("text-area"); 
+        const newGameButton = document.getElementById("new-game-button"); 
+        const hitButton = document.getElementById("hit-button"); 
+        const stayButton = document.getElementById("stand-button"); 
+
+  
+
+        // variables that determine result of game 
+        let gameStarted = false; 
+        let gameOver = false; 
+        let playerWon = false; 
+        let dealerCards = []; 
+        let playerCards = []; 
+        let dealerScore = 0; 
+        let playerScore = 0; 
+        let deck = []; 
+
+  
+
+        // resets and creates a new desk 
+        function createDeck() { 
+            return suits.flatMap(suit => values.map(value => ({ suit, value }))); 
+        }  
+
+  
+
+        // gets represenation of card 
+
+        function getCardString(card) { 
+            return `${card.value} of ${card.suit}`; 
+        } 
+
+  
+
+        // function helps get value of card numbers 
+        function getCardNumericValue(card) { 
+            switch (card.value) { 
+                case "Ace": 
+                    return 1; 
+                case "Two": 
+                    return 2; 
+                case "Three": 
+                    return 3; 
+                case "Four": 
+                    return 4; 
+                case "Five": 
+                    return 5; 
+                case "Six": 
+                    return 6; 
+                case "Seven": 
+                    return 7; 
+                case "Eight": 
+                    return 8; 
+                case "Nine": 
+                    return 9; 
+                default: 
+                    return 10; 
+            } 
+        } 
+
+
+        // determines total of hand for user 
+        function getScore(hand) { 
+            let score = hand.reduce((sum, card) => sum + getCardNumericValue(card), 0); 
+            let hasAce = hand.some(card => card.value === "Ace"); 
+
+            if (hasAce && score + 10 <= 21) { 
+                score += 10; 
+
+            } 
+
+            return score; 
+
+        } 
+
+
+        //  updates the game message in the text area 
+        function updateGameMessage(message) { 
+            let dealerHand = dealerCards.map(getCardString).join("\n"); 
+            textArea.innerText = `${message}\n\nDealer has:\n${dealerHand}`; 
+
+        } 
+
+        // function to update the dealers and players score 
+
+        function updateScores() { 
+            dealerScore = getScore(dealerCards); 
+            playerScore = getScore(playerCards); 
+        } 
+
+  
+
+        // fucntion  check if game end 
+        function checkForEndOfGame() { 
+            updateScores(); 
+
+
+            if (gameOver) { 
+                while (dealerScore < 17 && dealerScore <= playerScore && playerScore <= 21) { 
+                    dealerCards.push(getNextCard()); 
+                    updateScores(); 
+
+                } 
+
+                if (playerScore > 21) { 
+                    playerWon = false; 
+                } else if (dealerScore > 21) { 
+                    playerWon = true; 
+                } else if (dealerScore > playerScore) { 
+                    playerWon = false; 
+                } else if (dealerScore < playerScore) { 
+                    playerWon = true; 
+                } else { 
+                    playerWon = false; // resuklts in tie and dealer wins 
+
+                } 
+
+            } 
+
+            if (playerScore > 21) { 
+                playerWon = false; 
+                gameOver = true; 
+            } 
+
+        } 
+
+        // code detrmines wether to start  new game or not 
+        newGameButton.addEventListener("click", function () { 
+            gameStarted = true; 
+            gameOver = false; 
+            playerWon = false; 
+
+  
+
+            deck = createDeck(); 
+            shuffleDeck(deck); 
+            dealerCards = []; 
+            playerCards = []; 
+			
+
+            dealerCards.push(getNextCard()); 
+            dealerCards.push(getNextCard()); 
+            playerCards.push(getNextCard()); 
+            playerCards.push(getNextCard()); 
+
+  
+
+            newGameButton.style.display = "none"; 
+            hitButton.style.display = "inline"; 
+            stayButton.style.display = "inline"; 
+            showStatus(); 
+
+        }); 
+
+  
+
+        // code detrmines wen hit button clciked 
+
+        hitButton.addEventListener("click", function () { 
+            playerCards.push(getNextCard()); 
+            checkForEndOfGame(); 
+            showStatus(); 
+
+        }); 
+
+  
+
+        // code detrmines wehn stand buttion clicked 
+        stayButton.addEventListener("click", function () { 
+            gameOver = true; 
+            checkForEndOfGame(); 
+            showStatus(); 
+
+        }); 
+
+ 
+        // code  shuffles the deck of cards 
+        function shuffleDeck(deck) { 
+            for (let i = deck.length - 1; i > 0; i--) { 
+                const j = Math.floor(Math.random() * (i + 1)); 
+                [deck[i], deck[j]] = [deck[j], deck[i]]; 
+
+            } 
+
+            return deck; 
+
+        } 
+
+        // function gets next card from the deck 
+        function getNextCard() { 
+            return deck.shift(); 
+
+        } 
+
+  
+
+        //  shows current game status 
+
+        function showStatus() { 
+            if (!gameStarted) { 
+                updateGameMessage("Play Arctic Blackjack!"); 
+                return; 
+
+            } 
+
+  
+
+            let dealerCardString = `${getCardString(dealerCards[0])}\n-----`; 
+            let playerCardString = playerCards.map(getCardString).join("\n"); 
+
+  
+
+            updateGameMessage( 
+                `Dealer has:\n${dealerCardString}\n\n` + 
+                `Player has:\n${playerCardString} (score: ${playerScore})\n\n` 
+
+            ); 
+
+  
+
+            if (gameOver) { 
+                if (playerWon) { 
+                    updateGameMessage("You win!"); 
+                } else { 
+                    updateGameMessage("Dealer wins :( "); 
+                } 
+                newGameButton.style.display = "inline-block"; 
+                hitButton.style.display = "none"; 
+                stayButton.style.display = "none"; 
+            } 
+        } 
+
+        // game start 
+
+        function init() { 
+            newGameButton.style.display = "inline-block"; 
+            hitButton.style.display = "none"; 
+            stayButton.style.display = "none"; 
+            showStatus(); 
+
+        } 
+
+  
+
+        // init funtion when the page load 
+
+        window.addEventListener("load", init); 
+
+
+    </script> 
+
+</body> 
+
+  
+
+</html> 
+<!-- done by Alan Joyce --> 

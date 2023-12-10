@@ -1,0 +1,111 @@
+/* styles.css */ 
+
+body { 
+            text-align: center; 
+            font-family: Times New Roman
+		
+        } 
+		.Alan{background-color: #ADD8E6;}
+
+  
+
+        h1 { 
+            color: #02057d; 
+        } 
+
+  
+
+        #text-area { 
+
+            margin: 20px auto; 
+            width: 1000px; 
+            height: 300px; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            background-color: #14b5a0; 
+        } 
+
+  
+
+        button { 
+            display: inline-block; 
+            margin: 10px; 
+            padding: 10px 20px; 
+            font-size: 16px; 
+			background-color: #ADD8E6
+        } 
+
+ 
+        #new-game-button { 
+            display: inline; 
+        } 
+
+  
+
+        #text-area::-webkit-scrollbar { 
+            width: 5px; 
+        } 
+
+  
+
+        #text-area::-webkit-scrollbar-track { 
+            background-color: #14b5a0; 
+        } 
+
+  
+
+        #text-area::-webkit-scrollbar-thumb { 
+            background-color: #888; 
+        } 
+
+  
+
+        #text-area::-webkit-scrollbar-thumb:hover { 
+            background-color: #555; 
+        } 
+		
+body{
+		font-family: New Times Roman	
+}
+.Sean{background-color: #ADD8E6;}
+
+	
+img {
+  float: right;
+  padding: 10px;
+}
+
+
+
+<img src="artic fox.jpg" alt="artic fox">
+
+img {
+  float: ;
+  padding: 10px;
+}
+
+
+
+<img src="seal.jpg" alt="seal">
+
+
+img {
+  float: right;
+  padding: 10px;
+}
+
+
+
+<img src="wolf.jpg" alt="wolf">
+
+
+
+
+body {
+	font-family: Kanit;
+}
+
+.Andrew {
+background-image: linear-gradient(NAVY, #BDDEEC);}
+
+		
